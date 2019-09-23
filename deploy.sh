@@ -2,6 +2,6 @@ set -e
 
 git add .
 
-git commit -m "deploy"
+git commit -m "fix travis yml"
 
 git push

@@ -4,7 +4,7 @@ services:
   - docker
 
 
-befor_install:
+before_install:
   - docker build -t ben/docker-react -f Dockerfile.dev .
 
 script:
