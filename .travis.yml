@@ -1,0 +1,11 @@
+# language: generic 
+sudo: required
+services:
+  - docker
+
+
+befor_install:
+  - docker build -t ben/docker-react -f Dockerfile.dev .
+
+script:
+  - docker run -e CI=true ben/docker-react npm run test
