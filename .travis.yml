@@ -1,8 +1,33 @@
+# language: generic 
+# sudo: required
+# services:
+#   - docker
+
+
+# before_install:
+#   - docker build -t ben/docker-react -f Dockerfile.dev .
+
+# script:
+#   - docker run -e CI=true ben/docker-react npm run test
+
+# deploy:
+#   provider: elasticbeanstalk
+#   region: "ap-northeast-1"
+#   app: "docker-react"
+#   env: "DockerReact-env"
+#   bucket_name: "elasticbeanstalk-ap-northeast-1-924486238100"
+#   backet_path: "docker-react"
+#   on:
+#     branch: master
+#   access_key_id:
+#     secure: "$AWS_ACCESS_KEY"
+#   secret_access_key:
+#     secure: "$AWS_SECRET_KEY"
+
 language: generic 
 sudo: required
 services:
   - docker
-
 
 before_install:
   - docker build -t ben/docker-react -f Dockerfile.dev .
@@ -11,16 +36,30 @@ script:
   - docker run -e CI=true ben/docker-react npm run test
 
 deploy:
-  provider: elasticbeanstalk
-  region: "ap-northeast-1"
-  app: "docker-react"
-  env: "DockerReact-env"
-  bucket_name: "elasticbeanstalk-ap-northeast-1-924486238100"
-  backet_path: "docker-react"
-  on:
-    branch: master
-  access_key_id:
-    secure: "$AWS_ACCESS_KEY"
-  secret_access_key:
-    secure: "$AWS_SECRET_KEY"
+  - provider: s3
+    region: "ap-northeast-1"
+    app: "docker-react"
+    env: "DockerReact-env"
+    bucket_name: "elasticbeanstalk-ap-northeast-1-924486238100"
+    backet_path: "docker-react"
+    on:
+      branch: master
+    access_key_id:
+      secure: "$AWS_ACCESS_KEY"
+    secret_access_key:
+      secure: "$AWS_SECRET_KEY"
+    bucket: "travis-test-2019-09-24"
+  - provider: travis-ci
+    access_key_id:
+      secure: "$AWS_ACCESS_KEY"
+    secret_access_key:
+      secure: "$AWS_SECRET_KEY"
+    bucket: "travis-test-2019-09-24"
+    key: "lastest.zip"
+    application: travis-ci
+    deployment_group: master
+    region: ap-northeast-1
+    on:
+      branch: master
+
 
